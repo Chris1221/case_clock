@@ -282,6 +282,14 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+fetch('version.json')
+  .then(r => r.json())
+  .then(({ version }) => {
+    const el = document.getElementById('app-version');
+    if (el) el.textContent = version;
+  })
+  .catch(() => {});
+
 // ── Cheat sheet ──────────────────────────────────────────────────────────────
 
 function renderCheatSheet() {
