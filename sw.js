@@ -1,4 +1,4 @@
-const CACHE = 'caseclock-v3';
+const CACHE = 'caseclock-v4';
 const ASSETS = [
   './index.html',
   './app.js',
@@ -21,8 +21,16 @@ self.addEventListener('activate', e => {
   );
 });
 
+// Network-first: always try the network and refresh the cache.
+// Falls back to cache only when offline.
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(cached => cached || fetch(e.request))
+    fetch(e.request)
+      .then(response => {
+        const clone = response.clone();
+        caches.open(CACHE).then(c => c.put(e.request, clone));
+        return response;
+      })
+      .catch(() => caches.match(e.request))
   );
 });
