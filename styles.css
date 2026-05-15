@@ -64,7 +64,7 @@ body {
 /* ── Header ── */
 .app-header {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
   padding: 0 6px;
 }
@@ -641,11 +641,9 @@ body {
   opacity: 0.65;
 }
 
-.card-version {
+.brand-version {
   font-family: var(--mono);
   font-size: 0.55rem;
   color: var(--muted);
   opacity: 0.5;
-  text-align: right;
-  margin-top: 8px;
 }
