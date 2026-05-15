@@ -1,4 +1,4 @@
-const CACHE = 'caseclock-v4';
+const CACHE = 'caseclock-v5';
 const ASSETS = [
   './index.html',
   './app.js',

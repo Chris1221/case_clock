@@ -21,52 +21,71 @@
 <body>
   <div class="app">
     <header class="app-header">
-      <div class="brand">
-        <span class="brand-case">Case</span><span class="brand-clock">Clock</span>
+      <div class="brand-group">
+        <div class="brand">
+          <span class="brand-case">Case</span><span class="brand-clock">Clock</span>
+        </div>
+        <span class="brand-sub">OR Billing Calculator</span>
       </div>
-      <span class="brand-sub">OR Billing Calculator</span>
+      <button class="flip-btn" id="flip-btn" aria-label="Show cheat sheet">cheat sheet</button>
     </header>
 
-    <main class="card">
-      <div class="field">
-        <label class="field-label" for="start-time">Start</label>
-        <input type="time" id="start-time" class="time-input" autocomplete="off">
-      </div>
+    <main class="card" id="main-card">
+      <div class="card-inner" id="card-inner">
 
-      <div class="field-separator"></div>
-
-      <div class="field">
-        <label class="field-label" for="end-time">End</label>
-        <div class="time-row">
-          <input type="time" id="end-time" class="time-input" autocomplete="off">
-          <button class="now-btn" id="now-btn" type="button" aria-label="Set to current time">now</button>
-        </div>
-      </div>
-
-      <div class="results" id="results" aria-live="polite" aria-atomic="true">
-        <div class="results-rule"></div>
-
-        <div class="results-primary">
-          <div class="stat elapsed-stat">
-            <span class="stat-value" id="elapsed-display">—</span>
-            <span class="stat-label">elapsed</span>
+        <!-- Front: calculator -->
+        <div class="card-front">
+          <div class="field">
+            <label class="field-label" for="start-time">Start</label>
+            <input type="time" id="start-time" class="time-input" autocomplete="off">
           </div>
-          <div class="arrow">→</div>
-          <div class="stat units-stat">
-            <span class="stat-value" id="units-display">—</span>
-            <span class="stat-label">units</span>
+
+          <div class="field-separator"></div>
+
+          <div class="field">
+            <label class="field-label" for="end-time">End</label>
+            <div class="time-row">
+              <input type="time" id="end-time" class="time-input" autocomplete="off">
+              <button class="now-btn" id="now-btn" type="button" aria-label="Set to current time">now</button>
+            </div>
+          </div>
+
+          <div class="results" id="results" aria-live="polite" aria-atomic="true">
+            <div class="results-rule"></div>
+
+            <div class="results-primary">
+              <div class="stat elapsed-stat">
+                <span class="stat-value" id="elapsed-display">—</span>
+                <span class="stat-label">elapsed</span>
+              </div>
+              <div class="arrow">→</div>
+              <div class="stat units-stat">
+                <span class="stat-value" id="units-display">—</span>
+                <span class="stat-label">units</span>
+              </div>
+            </div>
+
+            <div class="tier-breakdown" id="tier-breakdown" role="table" aria-label="Unit breakdown by tier"></div>
+
+            <div class="overnight-badge" id="overnight-badge" aria-hidden="true">● overnight case</div>
+
+            <div class="card-entry-section">
+              <span class="ce-label">Write on card</span>
+              <div class="ce-chips" id="card-entry"></div>
+              <div class="ce-detail" id="ce-detail"></div>
+            </div>
           </div>
         </div>
 
-        <div class="tier-breakdown" id="tier-breakdown" role="table" aria-label="Unit breakdown by tier"></div>
-
-        <div class="overnight-badge" id="overnight-badge" aria-hidden="true">● overnight case</div>
-
-        <div class="card-entry-section">
-          <span class="ce-label">Write on card</span>
-          <div class="ce-chips" id="card-entry"></div>
-          <div class="ce-detail" id="ce-detail"></div>
+        <!-- Back: units reference -->
+        <div class="card-back">
+          <div class="sheet-header">
+            <span class="sheet-title">Units Reference</span>
+            <span class="sheet-sub">min range → units</span>
+          </div>
+          <div class="sheet-body" id="cheat-sheet"></div>
         </div>
+
       </div>
     </main>
 

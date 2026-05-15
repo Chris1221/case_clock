@@ -64,9 +64,15 @@ body {
 /* ── Header ── */
 .app-header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   padding: 0 6px;
+}
+
+.brand-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
 .brand {
@@ -95,18 +101,74 @@ body {
   color: var(--muted);
 }
 
-/* ── Card ── */
+/* ── Flip button ── */
+.flip-btn {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  color: var(--teal);
+  background: var(--teal-dim);
+  border: 1.5px solid var(--teal-border);
+  border-radius: 8px;
+  padding: 5px 11px;
+  cursor: pointer;
+  transition: background 0.12s ease, transform 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.flip-btn:active {
+  transform: scale(0.94);
+  background: rgba(0,180,180,0.22);
+}
+
+/* ── Card (3-D flip container) ── */
 .card {
-  background: var(--card);
+  perspective: 1400px;
+  min-height: 220px;
+  /* shadow/shape on the outer shell */
   border-radius: var(--radius-card);
-  padding: 22px 20px;
   box-shadow:
     0 1px 2px rgba(0,0,0,0.05),
     0 6px 20px rgba(26,58,92,0.10),
     0 0 0 1px rgba(26,58,92,0.07);
+}
+
+.card-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.48s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--radius-card);
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: var(--radius-card);
+  background: var(--card);
+}
+
+.card-front {
+  padding: 22px 20px;
   display: flex;
   flex-direction: column;
   gap: 0;
+}
+
+.card-back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ── Fields ── */
@@ -470,6 +532,101 @@ body {
 
 .ce-tier-row:nth-child(3) { border-left-color: var(--navy-mid); }
 .ce-tier-row:nth-child(4) { border-left-color: var(--teal); }
+
+/* ── Cheat sheet (card back) ── */
+.sheet-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 18px 20px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.sheet-title {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+.sheet-sub {
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.sheet-body {
+  padding: 12px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.sheet-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.sheet-tier-hdr {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 5px;
+  border-bottom: 1.5px solid var(--navy);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+.sheet-tier-2 .sheet-tier-hdr { border-bottom-color: var(--navy-mid); color: var(--navy-mid); }
+.sheet-tier-3 .sheet-tier-hdr { border-bottom-color: var(--teal);     color: var(--teal); }
+
+.sheet-rate {
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  opacity: 0.8;
+}
+
+.sheet-rows {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 3px 12px;
+}
+
+.sheet-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 3px 6px;
+  border-radius: 5px;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+}
+
+.sheet-row:nth-child(odd) {
+  background: var(--field-bg);
+}
+
+.sheet-range {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.sheet-units {
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.sheet-tier-2 .sheet-units { color: var(--navy-mid); }
+.sheet-tier-3 .sheet-units { color: var(--teal); }
 
 /* ── Footer ── */
 .app-footer {

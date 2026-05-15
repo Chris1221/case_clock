@@ -1,5 +1,76 @@
 'use strict';
 
+const UNITS_TABLE = [
+  { range: '0–15',     units: 1,   tier: 1 },
+  { range: '16–30',    units: 2,   tier: 1 },
+  { range: '31–45',    units: 3,   tier: 1 },
+  { range: '46–60',    units: 4,   tier: 1 },
+  { range: '61–75',    units: 6,   tier: 2 },
+  { range: '76–90',    units: 8,   tier: 2 },
+  { range: '91–105',   units: 11,  tier: 3 },
+  { range: '106–120',  units: 14,  tier: 3 },
+  { range: '121–135',  units: 17,  tier: 3 },
+  { range: '136–150',  units: 20,  tier: 3 },
+  { range: '151–165',  units: 23,  tier: 3 },
+  { range: '166–180',  units: 26,  tier: 3 },
+  { range: '181–195',  units: 29,  tier: 3 },
+  { range: '196–210',  units: 32,  tier: 3 },
+  { range: '211–225',  units: 35,  tier: 3 },
+  { range: '226–240',  units: 38,  tier: 3 },
+  { range: '241–255',  units: 41,  tier: 3 },
+  { range: '256–270',  units: 44,  tier: 3 },
+  { range: '271–285',  units: 47,  tier: 3 },
+  { range: '286–300',  units: 50,  tier: 3 },
+  { range: '301–315',  units: 53,  tier: 3 },
+  { range: '316–330',  units: 56,  tier: 3 },
+  { range: '331–345',  units: 59,  tier: 3 },
+  { range: '346–360',  units: 62,  tier: 3 },
+  { range: '361–375',  units: 65,  tier: 3 },
+  { range: '376–390',  units: 68,  tier: 3 },
+  { range: '391–405',  units: 71,  tier: 3 },
+  { range: '406–420',  units: 74,  tier: 3 },
+  { range: '421–435',  units: 77,  tier: 3 },
+  { range: '436–450',  units: 80,  tier: 3 },
+  { range: '451–465',  units: 83,  tier: 3 },
+  { range: '466–480',  units: 86,  tier: 3 },
+  { range: '481–495',  units: 89,  tier: 3 },
+  { range: '496–510',  units: 92,  tier: 3 },
+  { range: '511–525',  units: 95,  tier: 3 },
+  { range: '526–540',  units: 98,  tier: 3 },
+  { range: '541–555',  units: 101, tier: 3 },
+  { range: '556–570',  units: 104, tier: 3 },
+  { range: '571–585',  units: 107, tier: 3 },
+  { range: '586–600',  units: 110, tier: 3 },
+  { range: '601–615',  units: 113, tier: 3 },
+  { range: '616–630',  units: 116, tier: 3 },
+  { range: '631–645',  units: 119, tier: 3 },
+  { range: '646–660',  units: 122, tier: 3 },
+  { range: '661–675',  units: 125, tier: 3 },
+  { range: '676–690',  units: 128, tier: 3 },
+  { range: '691–705',  units: 131, tier: 3 },
+  { range: '706–720',  units: 134, tier: 3 },
+  { range: '721–735',  units: 137, tier: 3 },
+  { range: '736–750',  units: 140, tier: 3 },
+  { range: '751–765',  units: 143, tier: 3 },
+  { range: '766–780',  units: 146, tier: 3 },
+  { range: '781–795',  units: 149, tier: 3 },
+  { range: '796–810',  units: 152, tier: 3 },
+  { range: '811–825',  units: 155, tier: 3 },
+  { range: '826–840',  units: 158, tier: 3 },
+  { range: '841–855',  units: 161, tier: 3 },
+  { range: '856–870',  units: 164, tier: 3 },
+  { range: '871–885',  units: 167, tier: 3 },
+  { range: '886–900',  units: 170, tier: 3 },
+  { range: '901–915',  units: 173, tier: 3 },
+  { range: '916–930',  units: 176, tier: 3 },
+  { range: '931–945',  units: 179, tier: 3 },
+  { range: '946–960',  units: 182, tier: 3 },
+  { range: '961–975',  units: 185, tier: 3 },
+  { range: '976–990',  units: 188, tier: 3 },
+  { range: '991–1005', units: 191, tier: 3 },
+  { range: '1006–1020',units: 194, tier: 3 },
+];
+
 function billingUnits(minutes) {
   if (minutes <= 0) return 0;
   let total = 0;
@@ -210,3 +281,38 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   });
 }
+
+// ── Cheat sheet ──────────────────────────────────────────────────────────────
+
+function renderCheatSheet() {
+  const tiers = [
+    { num: 1, label: 'Tier 1', rate: '×1 / 15 min', rows: UNITS_TABLE.filter(r => r.tier === 1) },
+    { num: 2, label: 'Tier 2', rate: '×2 / 15 min', rows: UNITS_TABLE.filter(r => r.tier === 2) },
+    { num: 3, label: 'Tier 3', rate: '×3 / 15 min', rows: UNITS_TABLE.filter(r => r.tier === 3) },
+  ];
+
+  document.getElementById('cheat-sheet').innerHTML = tiers.map(t => `
+    <div class="sheet-section sheet-tier-${t.num}">
+      <div class="sheet-tier-hdr">
+        <span>${t.label}</span><span class="sheet-rate">${t.rate}</span>
+      </div>
+      <div class="sheet-rows">
+        ${t.rows.map(r => `
+          <div class="sheet-row">
+            <span class="sheet-range">${r.range}</span>
+            <span class="sheet-units">${r.units}</span>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+const mainCard = document.getElementById('main-card');
+const flipBtn  = document.getElementById('flip-btn');
+
+renderCheatSheet();
+
+flipBtn.addEventListener('click', () => {
+  const flipped = mainCard.classList.toggle('flipped');
+  flipBtn.textContent = flipped ? 'calculator' : 'cheat sheet';
+  flipBtn.setAttribute('aria-label', flipped ? 'Show calculator' : 'Show cheat sheet');
+});
