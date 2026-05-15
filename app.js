@@ -56,11 +56,13 @@ function cardEntryInfo(startMinutes, elapsedMinutes) {
   const result = {
     isValid,
     above: startMinutes + above_elapsed,
+    aboveElapsed: above_elapsed,
     aboveUnits: billingUnits(above_elapsed),
   };
   if (!isValid) {
     const below_elapsed = (n_above - 1) * 15 + 5;
     result.below = startMinutes + below_elapsed;
+    result.belowElapsed = below_elapsed;
     result.belowUnits = billingUnits(below_elapsed);
   }
   return result;
@@ -127,16 +129,17 @@ function update() {
     `</div>`
   ).join('');
 
+  ceDetailEl.innerHTML = '';
   const cardInfo = cardEntryInfo(startMin, elapsed);
   if (cardInfo) {
     let html = '';
     if (cardInfo.isValid) {
-      html = `<span class="ce-chip ce-valid">${formatTime(cardInfo.above)}<span class="ce-u">${cardInfo.aboveUnits}u ✓</span></span>`;
+      html = `<span class="ce-chip ce-valid" data-elapsed="${cardInfo.aboveElapsed}">${formatTime(cardInfo.above)}<span class="ce-u">${cardInfo.aboveUnits}u ✓</span></span>`;
     } else {
       if (cardInfo.below !== undefined) {
-        html += `<span class="ce-chip ce-low">${formatTime(cardInfo.below)}<span class="ce-u">${cardInfo.belowUnits}u</span></span>`;
+        html += `<span class="ce-chip ce-low" data-elapsed="${cardInfo.belowElapsed}">${formatTime(cardInfo.below)}<span class="ce-u">${cardInfo.belowUnits}u</span></span>`;
       }
-      html += `<span class="ce-chip ce-rec">${formatTime(cardInfo.above)}<span class="ce-u">${cardInfo.aboveUnits}u</span></span>`;
+      html += `<span class="ce-chip ce-rec" data-elapsed="${cardInfo.aboveElapsed}">${formatTime(cardInfo.above)}<span class="ce-u">${cardInfo.aboveUnits}u</span></span>`;
     }
     cardEntryEl.innerHTML = html;
   }
@@ -153,12 +156,44 @@ const unitsDisplay    = document.getElementById('units-display');
 const tierBreakdownEl = document.getElementById('tier-breakdown');
 const overnightBadge  = document.getElementById('overnight-badge');
 const cardEntryEl     = document.getElementById('card-entry');
+const ceDetailEl      = document.getElementById('ce-detail');
 
 setNow();
 
 startInput.addEventListener('change', update);
 endInput.addEventListener('change', update);
 nowBtn.addEventListener('click', setNow);
+
+cardEntryEl.addEventListener('click', e => {
+  const chip = e.target.closest('.ce-chip');
+  if (!chip) return;
+
+  if (chip.classList.contains('active')) {
+    chip.classList.remove('active');
+    ceDetailEl.innerHTML = '';
+    return;
+  }
+
+  cardEntryEl.querySelectorAll('.ce-chip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+
+  const chipElapsed = parseInt(chip.dataset.elapsed, 10);
+  const tiers = tierBreakdown(chipElapsed);
+
+  ceDetailEl.innerHTML =
+    `<div class="ce-summary">` +
+      `<span class="ce-sum-elapsed">${formatElapsed(chipElapsed)}</span>` +
+      `<span class="ce-sum-arrow">→</span>` +
+      `<span class="ce-sum-units">${billingUnits(chipElapsed)}u</span>` +
+    `</div>` +
+    tiers.map(t =>
+      `<div class="ce-tier-row">` +
+        `<span class="tier-name">${t.label}</span>` +
+        `<span class="tier-detail">${t.minutes} min</span>` +
+        `<span class="tier-units">${t.units} u</span>` +
+      `</div>`
+    ).join('');
+});
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

@@ -381,6 +381,18 @@ body {
   padding: 10px 13px;
   border-radius: 11px;
   border: 1.5px solid;
+  cursor: pointer;
+  transition: opacity 0.12s ease, box-shadow 0.12s ease;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.ce-chip:active {
+  opacity: 0.75;
+}
+
+.ce-chip.active {
+  box-shadow: 0 0 0 2.5px currentColor;
 }
 
 .ce-u {
@@ -407,6 +419,57 @@ body {
   background: var(--teal-dim);
   border-color: var(--teal-border);
 }
+
+/* ── Card entry detail ── */
+.ce-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: fadeIn 0.18s ease forwards;
+}
+
+.ce-detail:empty {
+  display: none;
+}
+
+.ce-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 2px 4px;
+}
+
+.ce-sum-elapsed {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.ce-sum-arrow {
+  font-size: 0.8rem;
+  color: var(--border);
+}
+
+.ce-sum-units {
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--teal);
+}
+
+.ce-tier-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 13px;
+  background: var(--field-bg);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--navy);
+}
+
+.ce-tier-row:nth-child(3) { border-left-color: var(--navy-mid); }
+.ce-tier-row:nth-child(4) { border-left-color: var(--teal); }
 
 /* ── Footer ── */
 .app-footer {
