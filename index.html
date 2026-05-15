@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>CaseClock</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="CaseClock">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="theme-color" content="#1a3a5c">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-case">Case</span><span class="brand-clock">Clock</span>
+      </div>
+      <span class="brand-sub">Surgical Billing</span>
+    </header>
+
+    <main class="card">
+      <div class="field">
+        <label class="field-label" for="start-time">Start</label>
+        <input type="time" id="start-time" class="time-input" autocomplete="off">
+      </div>
+
+      <div class="field-separator"></div>
+
+      <div class="field">
+        <label class="field-label" for="end-time">End</label>
+        <div class="time-row">
+          <input type="time" id="end-time" class="time-input" autocomplete="off">
+          <button class="now-btn" id="now-btn" type="button" aria-label="Set to current time">now</button>
+        </div>
+      </div>
+
+      <div class="results" id="results" aria-live="polite" aria-atomic="true">
+        <div class="results-rule"></div>
+
+        <div class="results-primary">
+          <div class="stat elapsed-stat">
+            <span class="stat-value" id="elapsed-display">—</span>
+            <span class="stat-label">elapsed</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="stat units-stat">
+            <span class="stat-value" id="units-display">—</span>
+            <span class="stat-label">units</span>
+          </div>
+        </div>
+
+        <div class="tier-breakdown" id="tier-breakdown" role="table" aria-label="Unit breakdown by tier"></div>
+
+        <div class="overnight-badge" id="overnight-badge" aria-hidden="true">● overnight case</div>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <span>×1 per 15 min &nbsp;·&nbsp; ×2 after 60 min &nbsp;·&nbsp; ×3 after 90 min</span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
