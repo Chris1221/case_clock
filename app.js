@@ -102,13 +102,23 @@ function update() {
   let elapsed = endMin - startMin;
   let overnight = false;
 
-  if (elapsed <= 0) {
+  if (elapsed < 0) {
     elapsed += 24 * 60;
     overnight = true;
   }
 
   if (elapsed === 0) {
-    resultsEl.classList.remove('visible');
+    // Same start and end: case is just starting — show minimum card entry only
+    elapsedDisplay.textContent = '—';
+    unitsDisplay.textContent = '—';
+    overnightBadge.classList.remove('visible');
+    overnightBadge.setAttribute('aria-hidden', 'true');
+    tierBreakdownEl.innerHTML = '';
+    if (ceDetailEl) ceDetailEl.innerHTML = '';
+    const minUnits = billingUnits(20);
+    cardEntryEl.innerHTML =
+      `<span class="ce-chip ce-rec" data-elapsed="20">${formatTime(startMin + 20)}<span class="ce-u">${minUnits}u</span></span>`;
+    resultsEl.classList.add('visible');
     return;
   }
 
@@ -129,7 +139,7 @@ function update() {
     `</div>`
   ).join('');
 
-  ceDetailEl.innerHTML = '';
+  if (ceDetailEl) ceDetailEl.innerHTML = '';
   const cardInfo = cardEntryInfo(startMin, elapsed);
   if (cardInfo) {
     let html = '';
