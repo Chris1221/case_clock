@@ -643,7 +643,7 @@ body {
 
 .brand-version {
   font-family: var(--mono);
-  font-size: 0.55rem;
+  font-size: 0.45rem;
   color: var(--muted);
   opacity: 0.5;
 }
