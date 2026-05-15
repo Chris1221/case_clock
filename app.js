@@ -36,6 +36,36 @@ function tierBreakdown(minutes) {
   return tiers;
 }
 
+function formatTime(totalMinutes) {
+  const mins = ((totalMinutes % 1440) + 1440) % 1440;
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+}
+
+// Returns the valid billing entry times nearest to the entered end time.
+// Valid times are: start + n*15 + 5 for n = 1, 2, 3, ...
+// If the entered end time IS valid, returns { isValid: true, above, aboveUnits }.
+// Otherwise returns { isValid: false, above, aboveUnits, below?, belowUnits? }.
+function cardEntryInfo(startMinutes, elapsedMinutes) {
+  if (elapsedMinutes <= 0) return null;
+  const remainder = elapsedMinutes - 5;
+  const isValid = remainder > 0 && remainder % 15 === 0;
+  const n_above = Math.max(1, Math.ceil(remainder / 15));
+  const above_elapsed = n_above * 15 + 5;
+  const result = {
+    isValid,
+    above: startMinutes + above_elapsed,
+    aboveUnits: billingUnits(above_elapsed),
+  };
+  if (!isValid) {
+    const below_elapsed = (n_above - 1) * 15 + 5;
+    result.below = startMinutes + below_elapsed;
+    result.belowUnits = billingUnits(below_elapsed);
+  }
+  return result;
+}
+
 function timeToMinutes(str) {
   if (!str) return null;
   const [h, m] = str.split(':').map(Number);
@@ -97,6 +127,20 @@ function update() {
     `</div>`
   ).join('');
 
+  const cardInfo = cardEntryInfo(startMin, elapsed);
+  if (cardInfo) {
+    let html = '';
+    if (cardInfo.isValid) {
+      html = `<span class="ce-chip ce-valid">${formatTime(cardInfo.above)}<span class="ce-u">${cardInfo.aboveUnits}u ✓</span></span>`;
+    } else {
+      if (cardInfo.below !== undefined) {
+        html += `<span class="ce-chip ce-low">${formatTime(cardInfo.below)}<span class="ce-u">${cardInfo.belowUnits}u</span></span>`;
+      }
+      html += `<span class="ce-chip ce-rec">${formatTime(cardInfo.above)}<span class="ce-u">${cardInfo.aboveUnits}u</span></span>`;
+    }
+    cardEntryEl.innerHTML = html;
+  }
+
   resultsEl.classList.add('visible');
 }
 
@@ -108,6 +152,7 @@ const elapsedDisplay  = document.getElementById('elapsed-display');
 const unitsDisplay    = document.getElementById('units-display');
 const tierBreakdownEl = document.getElementById('tier-breakdown');
 const overnightBadge  = document.getElementById('overnight-badge');
+const cardEntryEl     = document.getElementById('card-entry');
 
 setNow();
 

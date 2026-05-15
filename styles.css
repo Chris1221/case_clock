@@ -348,6 +348,66 @@ body {
   display: block;
 }
 
+/* ── Card entry ── */
+.card-entry-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.ce-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.ce-chips {
+  display: flex;
+  gap: 8px;
+}
+
+.ce-chip {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 10px 13px;
+  border-radius: 11px;
+  border: 1.5px solid;
+}
+
+.ce-u {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+
+.ce-valid {
+  color: var(--teal);
+  background: var(--teal-dim);
+  border-color: var(--teal-border);
+}
+
+.ce-low {
+  color: var(--muted);
+  background: var(--field-bg);
+  border-color: var(--border);
+}
+
+.ce-rec {
+  color: var(--teal);
+  background: var(--teal-dim);
+  border-color: var(--teal-border);
+}
+
 /* ── Footer ── */
 .app-footer {
   text-align: center;
