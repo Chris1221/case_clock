@@ -283,10 +283,11 @@ if ('serviceWorker' in navigator) {
 }
 
 fetch('version.json')
-  .then(r => r.json())
-  .then(({ version }) => {
+  .then(r => r.ok ? r.json() : null)
+  .then(data => {
+    if (!data) return;
     const el = document.getElementById('app-version');
-    if (el) el.textContent = version;
+    if (el) el.textContent = data.version;
   })
   .catch(() => {});
 
