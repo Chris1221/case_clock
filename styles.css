@@ -454,9 +454,9 @@ body {
 .ce-chip {
   flex: 1;
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 6px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
   font-family: var(--mono);
   font-size: 1rem;
   font-weight: 600;
@@ -467,6 +467,22 @@ body {
   transition: opacity 0.12s ease, box-shadow 0.12s ease;
   -webkit-tap-highlight-color: transparent;
   user-select: none;
+}
+
+.ce-chip-label {
+  font-size: 0.5rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.ce-chip-time {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 100%;
+  gap: 6px;
 }
 
 .ce-chip:active {
@@ -517,6 +533,7 @@ body {
 .ce-summary {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   padding: 2px 2px 4px;
 }
@@ -540,6 +557,19 @@ body {
   color: var(--teal);
 }
 
+.ce-tier-rows {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.ce-tier-rows.expanded {
+  max-height: 200px;
+}
+
 .ce-tier-row {
   display: flex;
   align-items: center;
@@ -550,8 +580,8 @@ body {
   border-left: 3px solid var(--navy);
 }
 
-.ce-tier-row:nth-child(3) { border-left-color: var(--navy-mid); }
-.ce-tier-row:nth-child(4) { border-left-color: var(--teal); }
+.ce-tier-row:nth-child(2) { border-left-color: var(--navy-mid); }
+.ce-tier-row:nth-child(3) { border-left-color: var(--teal); }
 
 /* ── Cheat sheet (card back) ── */
 .sheet-header {
@@ -631,9 +661,6 @@ body {
   font-size: 0.78rem;
 }
 
-.sheet-row:nth-child(odd) {
-  background: var(--field-bg);
-}
 
 .sheet-range {
   color: var(--muted);

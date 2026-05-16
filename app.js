@@ -188,7 +188,7 @@ function update() {
     if (ceDetailEl) ceDetailEl.innerHTML = '';
     const minUnits = billingUnits(20);
     cardEntryEl.innerHTML =
-      `<span class="ce-chip ce-rec" data-elapsed="20">${formatTime(startMin + 20)}<span class="ce-u">${minUnits}u</span></span>`;
+      `<span class="ce-chip ce-rec" data-elapsed="20"><span class="ce-chip-label">next valid</span><span class="ce-chip-time">${formatTime(startMin + 20)}<span class="ce-u">${minUnits}u</span></span></span>`;
     resultsEl.classList.add('visible');
     return;
   }
@@ -210,7 +210,7 @@ function update() {
     `</div>`
   ).join('');
   tierBreakdownEl.classList.remove('expanded');
-  breakdownToggle.textContent = 'breakdown ▸';
+  breakdownToggle.textContent = 'billing unit breakdown ▸';
   breakdownToggle.setAttribute('aria-expanded', 'false');
 
   if (ceDetailEl) ceDetailEl.innerHTML = '';
@@ -218,12 +218,12 @@ function update() {
   if (cardInfo) {
     let html = '';
     if (cardInfo.isValid) {
-      html = `<span class="ce-chip ce-valid" data-elapsed="${cardInfo.aboveElapsed}">${formatTime(cardInfo.above)}<span class="ce-u">${cardInfo.aboveUnits}u ✓</span></span>`;
+      html = `<span class="ce-chip ce-valid" data-elapsed="${cardInfo.aboveElapsed}"><span class="ce-chip-label">valid</span><span class="ce-chip-time">${formatTime(cardInfo.above)}<span class="ce-u">${cardInfo.aboveUnits}u ✓</span></span></span>`;
     } else {
       if (cardInfo.below !== undefined) {
-        html += `<span class="ce-chip ce-low" data-elapsed="${cardInfo.belowElapsed}">${formatTime(cardInfo.below)}<span class="ce-u">${cardInfo.belowUnits}u</span></span>`;
+        html += `<span class="ce-chip ce-low" data-elapsed="${cardInfo.belowElapsed}"><span class="ce-chip-label">last valid</span><span class="ce-chip-time">${formatTime(cardInfo.below)}<span class="ce-u">${cardInfo.belowUnits}u</span></span></span>`;
       }
-      html += `<span class="ce-chip ce-rec" data-elapsed="${cardInfo.aboveElapsed}">${formatTime(cardInfo.above)}<span class="ce-u">${cardInfo.aboveUnits}u</span></span>`;
+      html += `<span class="ce-chip ce-rec" data-elapsed="${cardInfo.aboveElapsed}"><span class="ce-chip-label">next valid</span><span class="ce-chip-time">${formatTime(cardInfo.above)}<span class="ce-u">${cardInfo.aboveUnits}u</span></span></span>`;
     }
     cardEntryEl.innerHTML = html;
   }
@@ -251,7 +251,7 @@ nowBtn.addEventListener('click', setNow);
 
 breakdownToggle.addEventListener('click', () => {
   const expanded = tierBreakdownEl.classList.toggle('expanded');
-  breakdownToggle.textContent = expanded ? 'breakdown ▾' : 'breakdown ▸';
+  breakdownToggle.textContent = expanded ? 'billing unit breakdown ▾' : 'billing unit breakdown ▸';
   breakdownToggle.setAttribute('aria-expanded', String(expanded));
 });
 
@@ -277,13 +277,24 @@ cardEntryEl.addEventListener('click', e => {
       `<span class="ce-sum-arrow">→</span>` +
       `<span class="ce-sum-units">${billingUnits(chipElapsed)}u</span>` +
     `</div>` +
-    tiers.map(t =>
-      `<div class="ce-tier-row">` +
-        `<span class="tier-name">${t.label}</span>` +
-        `<span class="tier-detail">${t.minutes} min</span>` +
-        `<span class="tier-units">${t.units} u</span>` +
-      `</div>`
-    ).join('');
+    `<button class="breakdown-toggle ce-breakdown-toggle" aria-expanded="false">billing unit breakdown ▸</button>` +
+    `<div class="ce-tier-rows">` +
+      tiers.map(t =>
+        `<div class="ce-tier-row">` +
+          `<span class="tier-name">${t.label}</span>` +
+          `<span class="tier-detail">${t.minutes} min</span>` +
+          `<span class="tier-units">${t.units} u</span>` +
+        `</div>`
+      ).join('') +
+    `</div>`;
+
+  const ceToggle = ceDetailEl.querySelector('.ce-breakdown-toggle');
+  const ceTierRows = ceDetailEl.querySelector('.ce-tier-rows');
+  ceToggle.addEventListener('click', () => {
+    const expanded = ceTierRows.classList.toggle('expanded');
+    ceToggle.textContent = expanded ? 'billing unit breakdown ▾' : 'billing unit breakdown ▸';
+    ceToggle.setAttribute('aria-expanded', String(expanded));
+  });
 });
 
 if ('serviceWorker' in navigator) {
