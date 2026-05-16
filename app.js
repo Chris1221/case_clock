@@ -243,8 +243,6 @@ const overnightBadge  = document.getElementById('overnight-badge');
 const cardEntryEl     = document.getElementById('card-entry');
 const ceDetailEl      = document.getElementById('ce-detail');
 
-setNow();
-
 startInput.addEventListener('change', update);
 endInput.addEventListener('change', update);
 nowBtn.addEventListener('click', setNow);
