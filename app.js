@@ -295,6 +295,10 @@ cardEntryEl.addEventListener('click', e => {
   });
 });
 
+if (window.matchMedia('(display-mode: standalone)').matches) {
+  gtag('event', 'pwa_session');
+}
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('sw.js').catch(() => {});
