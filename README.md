@@ -5,17 +5,23 @@ A mobile-first Progressive Web App for anesthesiologists to calculate surgical b
 ## Usage
 
 1. Enter the **start time** of the case
-2. The **end time** defaults to now — adjust it if reviewing a card filled in by someone else
+2. Enter the **end time** (or tap **Now** to use the current time)
 3. The app shows:
    - Elapsed time and total billing units
-   - A tier breakdown of how units were calculated
+   - A **billing unit breakdown** toggle — tap to see how units were split across tiers
    - **Write on card** — the valid billing entry times nearest to the entered end time
+
+Tap the **cheat sheet** button in the top right to flip the card and see the full units reference table.
 
 ### Write on card
 
 Billing is documented in 15-minute increments from the start time, with a 5-minute safety buffer added to the end of the last unit. Valid card entry times take the form `start + n×15 + 5 min`.
 
-If the entered end time already follows this convention, a single time is shown with a checkmark. If not, the two nearest valid options are shown so you can see which unit count each corresponds to — useful when reviewing a card a resident has filled in.
+If the entered end time already follows this convention, a single chip is shown marked **valid**. If not, two options are shown:
+- **Last valid** — the nearest valid time before the entered end time
+- **Next valid** — the nearest valid time after the entered end time
+
+Tap a chip to expand the billing unit breakdown for that specific entry time.
 
 ## Billing unit rates
 
