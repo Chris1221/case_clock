@@ -209,6 +209,9 @@ function update() {
       `<span class="tier-units" role="cell">${t.units} u</span>` +
     `</div>`
   ).join('');
+  tierBreakdownEl.classList.remove('expanded');
+  breakdownToggle.textContent = 'breakdown ▸';
+  breakdownToggle.setAttribute('aria-expanded', 'false');
 
   if (ceDetailEl) ceDetailEl.innerHTML = '';
   const cardInfo = cardEntryInfo(startMin, elapsed);
@@ -235,6 +238,7 @@ const resultsEl       = document.getElementById('results');
 const elapsedDisplay  = document.getElementById('elapsed-display');
 const unitsDisplay    = document.getElementById('units-display');
 const tierBreakdownEl = document.getElementById('tier-breakdown');
+const breakdownToggle = document.getElementById('breakdown-toggle');
 const overnightBadge  = document.getElementById('overnight-badge');
 const cardEntryEl     = document.getElementById('card-entry');
 const ceDetailEl      = document.getElementById('ce-detail');
@@ -244,6 +248,12 @@ setNow();
 startInput.addEventListener('change', update);
 endInput.addEventListener('change', update);
 nowBtn.addEventListener('click', setNow);
+
+breakdownToggle.addEventListener('click', () => {
+  const expanded = tierBreakdownEl.classList.toggle('expanded');
+  breakdownToggle.textContent = expanded ? 'breakdown ▾' : 'breakdown ▸';
+  breakdownToggle.setAttribute('aria-expanded', String(expanded));
+});
 
 cardEntryEl.addEventListener('click', e => {
   const chip = e.target.closest('.ce-chip');

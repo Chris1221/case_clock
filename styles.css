@@ -343,10 +343,30 @@ body {
 }
 
 /* ── Tier breakdown ── */
+.breakdown-toggle {
+  background: none;
+  border: none;
+  padding: 4px 0;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  align-self: flex-start;
+}
+
 .tier-breakdown {
   display: flex;
   flex-direction: column;
   gap: 7px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease;
+}
+
+.tier-breakdown.expanded {
+  max-height: 300px;
 }
 
 .tier-row {
